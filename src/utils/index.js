@@ -4,13 +4,12 @@ import * as fs from 'fs'
 const hostPath = 'C:/WINDOWS/system32/drivers/etc/hosts'
 const vHostPath = 'C:/xampp/apache/conf/extra/httpd-vhosts.conf'
 
-export const verifyVhost = ({ path = vHostPath }) => new Promise((resolve, reject) => {
+export const verifyVhost = ({ path = null }) => new Promise((resolve, reject) => {
   try {
-    console.log(`${path}/apache/conf/extra/httpd-vhosts.conf`)
-    if (fs.existsSync(`${path}/apache/conf/extra/httpd-vhosts.conf`) && fs.existsSync(vHostPath)) {
+    if (fs.existsSync(path ? `${path}/apache/conf/extra/httpd-vhosts.conf` : vHostPath) && fs.existsSync(hostPath)) {
       resolve()
     }
-    reject(new Error('Host or VHost files do not exist make sure you installed all correctly and restart the app!'))
+    reject(new Error('Host or VHost files do not exist make sure you installed all correctly!'))
   } catch (err) {
     console.log(err)
     reject(err)
