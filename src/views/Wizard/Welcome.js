@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Row, Col, Button, Input, Alert } from 'reactstrap'
 import { verifyVhost, useInput } from '../../utils'
 
-const Welcome = () => {
+const Welcome = (props) => {
   const [alert, setAlert] = useState({ msg: null, color: null })
   const [input, setInput] = useInput()
 
@@ -10,6 +10,7 @@ const Welcome = () => {
     try {
       await verifyVhost(input)
       setAlert({ msg: 'Host file and vHost file sexists', color: 'success' })
+      setTimeout(_ => props.nextStep(), 1000)
     } catch (e) {
       console.log(e)
       setAlert({ msg: e.message, color: 'danger' })
@@ -36,7 +37,7 @@ const Welcome = () => {
           alert.msg
             ? <Alert className='mt-4' color={alert.color}>
               {alert.msg}
-            </Alert>
+              </Alert>
             : null
         }
       </Col>
