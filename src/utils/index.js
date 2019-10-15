@@ -1,15 +1,19 @@
-var fs = require('fs') // Load the File System to execute our common tasks (CRUD)
+
+import { useState } from 'react'
+import * as fs from 'fs'
 const hostPath = 'C:/WINDOWS/system32/drivers/etc/hosts'
 const vHostPath = 'C:/xampp/apache/conf/extra/httpd-vhosts.conf'
 
-export const verifyVhost = () => new Promise((resolve, reject) => {
+export const verifyVhost = ({ path = vHostPath }) => new Promise((resolve, reject) => {
   try {
-    if (fs.existsSync(hostPath) && fs.existsSync(vHostPath)) {
-      resolve('Host file and vHost file sexists')
+    console.log(`${path}/apache/conf/extra/httpd-vhosts.conf`)
+    if (fs.existsSync(`${path}/apache/conf/extra/httpd-vhosts.conf`) && fs.existsSync(vHostPath)) {
+      resolve()
     }
+    reject(new Error('Host or VHost files do not exist make sure you installed all correctly and restart the app!'))
   } catch (err) {
     console.log(err)
-    reject(new Error('Host or VHost files do not exist make sure you installed all correctly and restart the app!'))
+    reject(err)
   }
 })
 
@@ -49,3 +53,13 @@ export const addEntries = (domain = null, suffix = null) => new Promise((resolve
     resolve('All done! restart XAMPP and enjoy!')
   })
 })
+
+export const useInput = (startingState = '') => {
+  const [state, setState] = useState(startingState)
+
+  const setInputs = (e) => setState({
+    [e.target.name]: e.target.value
+  })
+
+  return [state, setInputs]
+}

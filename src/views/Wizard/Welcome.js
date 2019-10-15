@@ -1,7 +1,21 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Row, Col, Button, Input, Alert } from 'reactstrap'
+import { verifyVhost, useInput } from '../../utils'
 
 const Welcome = () => {
+  const [alert, setAlert] = useState({ msg: null, color: null })
+  const [input, setInput] = useInput()
+
+  const checkXamp = async () => {
+    try {
+      await verifyVhost(input)
+      setAlert({ msg: 'Host file and vHost file sexists', color: 'success' })
+    } catch (e) {
+      console.log(e)
+      setAlert({ msg: e.message, color: 'danger' })
+    }
+  }
+
   return (
     <Row className='align-items-center'>
       <Col>
@@ -15,12 +29,16 @@ const Welcome = () => {
           path to your XAMPP installation:
         </p>
         <div className='d-flex flex-row'>
-          <Input type='text' className='w-50 mr-4' placeholder='C:\xampp' />
-          <Button color='success'>CHECK NOW</Button>
+          <Input onChange={setInput} type='text' className='w-50 mr-4' name='path' placeholder='C:/xampp' />
+          <Button color='success' onClick={checkXamp}>CHECK NOW</Button>
         </div>
-        <Alert className='mt-4' color='primary'>
-          It worked!
-        </Alert>
+        {
+          alert.msg
+            ? <Alert className='mt-4' color={alert.color}>
+              {alert.msg}
+            </Alert>
+            : null
+        }
       </Col>
     </Row>
   )

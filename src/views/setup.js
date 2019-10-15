@@ -1,6 +1,6 @@
 import React from 'react'
 import StepWizard from 'react-step-wizard'
-import Welcome from './Wizard/Welcome'
+import Welcome from './wizard/Welcome'
 import { Container } from 'reactstrap'
 
 const Setup = () => {
