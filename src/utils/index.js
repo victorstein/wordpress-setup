@@ -1,15 +1,16 @@
-var fs = require('fs') // Load the File System to execute our common tasks (CRUD)
+import * as fs from 'fs'
 const hostPath = 'C:/WINDOWS/system32/drivers/etc/hosts'
 const vHostPath = 'C:/xampp/apache/conf/extra/httpd-vhosts.conf'
 
 export const verifyVhost = () => new Promise((resolve, reject) => {
   try {
     if (fs.existsSync(hostPath) && fs.existsSync(vHostPath)) {
-      resolve('Host file and vHost file sexists')
+      resolve()
     }
+    reject(new Error('Host or VHost files do not exist make sure you installed all correctly and restart the app!'))
   } catch (err) {
     console.log(err)
-    reject(new Error('Host or VHost files do not exist make sure you installed all correctly and restart the app!'))
+    reject(err)
   }
 })
 
