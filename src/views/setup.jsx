@@ -1,12 +1,15 @@
 import React from 'react'
 import StepWizard from 'react-step-wizard'
 import Welcome from './Wizard/Welcome'
+import { Container } from 'reactstrap'
 
 const Setup = () => {
   return (
-    <StepWizard>
-      <Welcome />
-    </StepWizard>
+    <Container className='vh-100 d-flex align-items-center px-4' fluid>
+      <StepWizard>
+        <Welcome />
+      </StepWizard>
+    </Container>
   )
 }
 
