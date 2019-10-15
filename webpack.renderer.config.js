@@ -4,9 +4,6 @@ const path = require('path')
 
 module.exports = {
   // Put your normal webpack config below here
-  resolve: {
-    extensions: ['.js', '.jsx']
-  },
   plugins: [
     new CopyWebpackPlugin(
       [{ from: path.join('src', 'assets'), to: 'assets' }],
