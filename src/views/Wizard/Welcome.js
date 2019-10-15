@@ -1,7 +1,7 @@
 import React from 'react'
 import { Row, Col, Button, Input, Alert } from 'reactstrap'
 
-const Welcome = () => {
+const Welcome = (props) => {
   return (
     <Row className='align-items-center'>
       <Col>
@@ -16,7 +16,7 @@ const Welcome = () => {
         </p>
         <div className='d-flex flex-row'>
           <Input type='text' className='w-50 mr-4' placeholder='C:\xampp' />
-          <Button color='success'>CHECK NOW</Button>
+          <Button color='success' onClick={props.nextStep}>CHECK NOW</Button>
         </div>
         <Alert className='mt-4' color='primary'>
           It worked!
