@@ -1,18 +1,20 @@
 const rules = require('./webpack.rules')
-
-rules.push({
-  test: /\.css$/,
-  use: [{ loader: 'style-loader' }, { loader: 'css-loader' }]
-})
-
-rules.push({
-  test: /\.jsx?$/,
-  exclude: /node_modules/,
-  use: [{ loader: 'babel-loader' }]
-})
+const CopyWebpackPlugin = require('copy-webpack-plugin')
+const path = require('path')
 
 module.exports = {
   // Put your normal webpack config below here
+  resolve: {
+    extensions: ['.js', '.jsx']
+  },
+  plugins: [
+    new CopyWebpackPlugin(
+      [{ from: path.join('src', 'assets'), to: 'assets' }],
+      {
+        ignore: ['.gitkeep']
+      }
+    )
+  ],
   module: {
     rules
   }
