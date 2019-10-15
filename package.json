@@ -63,9 +63,12 @@
     }
   },
   "dependencies": {
+    "boostrap": "^2.0.0",
     "electron-squirrel-startup": "^1.0.0",
     "react": "^16.10.2",
-    "react-dom": "^16.10.2"
+    "react-dom": "^16.10.2",
+    "react-router-dom": "^5.1.2",
+    "reactstrap": "^8.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.6.4",
