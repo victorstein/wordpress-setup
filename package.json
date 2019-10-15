@@ -63,6 +63,7 @@
     }
   },
   "dependencies": {
+    "@babel/polyfill": "^7.6.0",
     "bootstrap": "^4.3.1",
     "electron-squirrel-startup": "^1.0.0",
     "extract-zip": "^1.6.7",
