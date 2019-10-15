@@ -1,6 +1,6 @@
 import React, { Suspense, lazy } from 'react'
 import ReactDOM from 'react-dom'
-import './index.css'
+import 'bootstrap/dist/css/bootstrap.min.css'
 import { MemoryRouter as Router, Route, Switch } from 'react-router-dom'
 
 // Lazy imports
