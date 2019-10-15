@@ -1,13 +1,14 @@
 import React, { useState } from 'react'
 import { Row, Col, Button, Input, Alert } from 'reactstrap'
-import { verifyVhost } from '../../utils'
+import { verifyVhost, useInput } from '../../utils'
 
 const Welcome = () => {
   const [alert, setAlert] = useState({ msg: null, color: null })
+  const [input, setInput] = useInput()
 
   const checkXamp = async () => {
     try {
-      await verifyVhost()
+      await verifyVhost(input)
       setAlert({ msg: 'Host file and vHost file sexists', color: 'success' })
     } catch (e) {
       console.log(e)
@@ -28,7 +29,7 @@ const Welcome = () => {
           path to your XAMPP installation:
         </p>
         <div className='d-flex flex-row'>
-          <Input type='text' className='w-50 mr-4' placeholder='C:\xampp' />
+          <Input onChange={setInput} type='text' className='w-50 mr-4' name='path' placeholder='C:/xampp' />
           <Button color='success' onClick={checkXamp}>CHECK NOW</Button>
         </div>
         {
