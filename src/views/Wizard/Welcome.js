@@ -37,7 +37,7 @@ const Welcome = (props) => {
           alert.msg
             ? <Alert className='mt-4' color={alert.color}>
               {alert.msg}
-              </Alert>
+            </Alert>
             : null
         }
       </Col>

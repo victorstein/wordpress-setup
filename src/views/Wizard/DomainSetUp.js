@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { Row, Col, Button, Input, Alert } from 'reactstrap'
 import { useInput, addEntries } from '../../utils'
+import { wizardStore } from '../setup'
 
 const Domain = (props) => {
   const [alert, setAlert] = useState({
@@ -8,12 +9,12 @@ const Domain = (props) => {
     color: null
   })
   const [inputs, setInputs] = useInput()
-
-  console.log(inputs)
+  const { mutation } = useContext(wizardStore)
 
   const addDomain = async () => {
     try {
       await addEntries(inputs)
+      mutation.setDomain(inputs.domain)
       setAlert({ msg: 'Paths to new domain added successfully', color: 'success' })
       setTimeout(_ => props.nextStep(), 1000)
     } catch (e) {

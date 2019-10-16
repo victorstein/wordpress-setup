@@ -1,7 +1,82 @@
-import React from 'react'
+import React, { useState, useContext } from 'react'
 import { Row, Col, Button, Input, Alert, Progress, FormGroup, Label } from 'reactstrap'
+import * as fs from 'fs'
+import request from 'request'
+import progress from 'request-progress'
+import { useInput } from '../../utils'
+import { wizardStore } from '../setup'
+import Extract from 'adm-zip'
+import extra from 'fs-extra'
 
 const WordPress = (props) => {
+  const [bar, setBar] = useState(0)
+  const [alert, setAlert] = useState({
+    msg: null,
+    color: null
+  })
+  const [loading, setLoading] = useState(false)
+  const [inputs, setInputs] = useInput({ theme: 'impreza' })
+  const { query } = useContext(wizardStore)
+
+  const downloadWorpress = () => new Promise((resolve, reject) => {
+    setLoading(true)
+    progress(request('http://wordpress.org/latest.zip'), { throttle: 100 })
+      .on('progress', function ({ percent }) {
+        setBar((percent * 100).toFixed(0))
+      })
+      .on('error', (err) => {
+        console.log(err)
+        setLoading(false)
+        return reject(err)
+      })
+      .on('end', () => {
+        setBar(100)
+        resolve()
+      })
+      .pipe(fs.createWriteStream(`C:/xampp/htdocs/${query.domain}/wordpress.zip`))
+  })
+
+  const extractFile = (source) => new Promise((resolve, reject) => {
+    try {
+      const zip = new Extract(`C:/xampp/htdocs/${query.domain}/wordpress.zip`)
+      zip.extractEntryTo('wordpress/', `C:/xampp/htdocs/${query.domain}/`, true, true)
+
+      fs.readdir(`C:/xampp/htdocs/${query.domain}/wordpress`, async (err, files) => {
+        // handling error
+        if (err) {
+          return reject(err)
+        }
+        // listing all files using forEach
+        for (let file of files) {
+          await extra.move(`C:/xampp/htdocs/${query.domain}/wordpress/${file}`, `C:/xampp/htdocs/${query.domain}/${file}`)
+        }
+        // delete the zip file
+        await fs.unlinkSync(`C:/xampp/htdocs/${query.domain}/wordpress.zip`)
+        // delete empty directory
+        await fs.rmdirSync(`C:/xampp/htdocs/${query.domain}/wordpress/`)
+        resolve()
+      })
+    } catch (e) {
+      console.log(e)
+      reject(e)
+    }
+  })
+
+  const download = async () => {
+    try {
+      // download wordpress
+      await downloadWorpress()
+      // unzip wordpress
+      await extractFile()
+      setLoading(false)
+      setAlert({ msg: 'WordPress installed successfully witht the specified theme', color: 'success' })
+      setTimeout(_ => props.nextStep(), 1000)
+    } catch (e) {
+      console.log(e)
+      setAlert({ msg: e.message, color: 'danger' })
+    }
+  }
+
   return (
     <Row className='align-items-center'>
       <Col>
@@ -10,25 +85,35 @@ const WordPress = (props) => {
           <div className='d-flex flex-row'>
             <FormGroup className='mr-3' check>
               <Label check>
-                <Input type='radio' name='radio1' />
+                <Input checked={inputs.theme === 'impreza'} type='radio' onChange={setInputs} name='theme' value='impreza' />
                 Impreza
               </Label>
             </FormGroup>
             <FormGroup className='mr-3' check>
               <Label check>
-                <Input type='radio' name='radio1' />
+                <Input checked={inputs.theme === 'apress'} type='radio' onChange={setInputs} name='theme' value='apress' />
                 APress
               </Label>
             </FormGroup>
           </div>
         </FormGroup>
         <div className='mb-2'>
-          <Progress value='25'>25%</Progress>
+          <Progress value={bar}>{bar} %</Progress>
         </div>
-        <Button color='success' onClick={props.nextStep} block>DOWNLOAD AND INSTALL</Button>
-        <Alert className='mt-4' color='primary'>
-          It worked!
-        </Alert>
+        <Button color='success' disabled={loading} onClick={download} block>
+          {
+            loading
+              ? 'DOWNLOADING WORDPRESS'
+              : 'DOWNLOAD AND INSTALL'
+          }
+        </Button>
+        {
+          alert.msg
+            ? <Alert className='mt-4' color={alert.color}>
+              { alert.msg }
+            </Alert>
+            : null
+        }
       </Col>
       <Col>
         <h1 className='font-weight-bold'>INSTALL WORDPRESS</h1>

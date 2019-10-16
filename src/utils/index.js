@@ -19,19 +19,21 @@ export const verifyVhost = ({ path = null }) => new Promise((resolve, reject) =>
   }
 })
 
-export const addEntries = ({ domain = null, suffix = null }) => new Promise((resolve, reject) => {
-  console.log(!domain || !suffix)
-  if (!domain || !suffix) {
-    return reject(new Error('input info you dumb ass!'))
-  }
-  // create directory
-  var dir = `C:/xampp/htdocs/${domain}/`
+export const addEntries = ({ domain = null, suffix = null }) => new Promise(async (resolve, reject) => {
+  try {
+    if (!domain || !suffix) {
+      return reject(new Error('input info you dumb ass!'))
+    }
+    // create directory
+    var dir = `C:/xampp/htdocs/${domain}/`
 
-  if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir)
-  }
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir)
+    } else {
+      return reject(new Error('Domain already exists in your host files!'))
+    }
 
-  const data = `
+    const data = `
   # virtual host entry for www.${domain}.${suffix}
   <VirtualHost *:80>
     DocumentRoot C:/xampp/htdocs/${domain}/
@@ -42,19 +44,20 @@ export const addEntries = ({ domain = null, suffix = null }) => new Promise((res
       ServerName www.${domain}.${suffix}
   </VirtualHost>
   `
-  const host = `
+    const host = `
+  # virtual host entry for www.${domain}.${suffix}
   127.0.0.1       www.${domain}.${suffix}
   127.0.0.1       ${domain}.${suffix}
   `
 
-  fs.appendFile(hostPath, host, function (err) {
-    if (err) reject(err)
-  })
+    await fs.appendFileSync(hostPath, host)
+    await fs.appendFileSync(vHostPath, data)
 
-  fs.appendFile(vHostPath, data, function (err) {
-    if (err) reject(err)
     return resolve('All done! restart XAMPP and enjoy!')
-  })
+  } catch (e) {
+    console.log(e)
+    reject(e)
+  }
 })
 
 export const useInput = (startingState = '') => {

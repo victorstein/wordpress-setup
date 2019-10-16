@@ -1,18 +1,33 @@
-import React from 'react'
+import React, { createContext, useState } from 'react'
 import StepWizard from 'react-step-wizard'
 import Welcome from './Wizard/Welcome'
 import DomainSetUp from './Wizard/DomainSetUp'
 import WordPress from './Wizard/WordPress'
 import { Container } from 'reactstrap'
 
+export const wizardStore = createContext()
+
 const Setup = (props) => {
+  const [state, setState] = useState({
+    domain: null,
+    suffix: null
+  })
+
   return (
     <Container className='vh-100 d-flex align-items-center px-4' fluid>
-      <StepWizard>
-        <Welcome />
-        <DomainSetUp />
-        <WordPress />
-      </StepWizard>
+      <wizardStore.Provider value={{
+        query: state,
+        mutation: {
+          setDomain: (domain) => setState({ ...state, domain }),
+          setSuffix: (suffix) => setState({ ...state, suffix })
+        }
+      }}>
+        <StepWizard>
+          <Welcome />
+          <DomainSetUp />
+          <WordPress />
+        </StepWizard>
+      </wizardStore.Provider>
     </Container>
   )
 }
