@@ -7,9 +7,9 @@ import { useInput } from '../../utils'
 import { wizardStore } from '../setup'
 import Extract from 'adm-zip'
 import extra from 'fs-extra'
-import impreza from '../../assets/Themes/Impreza.zip'
-import apress from '../../assets/Themes/apress.zip'
-import vcClipboard from '../../assets/plugins/vc_clipboard.zip'
+import '../../assets/Themes/Impreza.zip'
+import '../../assets/Themes/apress.zip'
+import '../../assets/plugins/vc_clipboard.zip'
 
 const WordPress = (props) => {
   const [bar, setBar] = useState(0)
@@ -23,6 +23,7 @@ const WordPress = (props) => {
 
   const downloadWorpress = () => new Promise((resolve, reject) => {
     setLoading(true)
+
     progress(request('http://wordpress.org/latest.zip'), { throttle: 100 })
       .on('progress', function ({ percent }) {
         setBar((percent * 100).toFixed(0))
@@ -131,7 +132,7 @@ const WordPress = (props) => {
           alert.msg
             ? <Alert className='mt-4' color={alert.color}>
               {alert.msg}
-              </Alert>
+            </Alert>
             : null
         }
       </Col>
