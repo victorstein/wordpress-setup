@@ -7,6 +7,10 @@ import { useInput } from '../../utils'
 import { wizardStore } from '../setup'
 import Extract from 'adm-zip'
 import extra from 'fs-extra'
+import impreza from '../../assets/Themes/Impreza.zip'
+import apress from '../../assets/Themes/apress.zip'
+
+console.log(impreza, apress)
 
 const WordPress = (props) => {
   const [bar, setBar] = useState(0)
