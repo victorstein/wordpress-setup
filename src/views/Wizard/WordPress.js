@@ -7,9 +7,9 @@ import { useInput } from '../../utils'
 import { wizardStore } from '../setup'
 import Extract from 'adm-zip'
 import extra from 'fs-extra'
-import impreza from '../../assets/Themes/Impreza.zip'
-import apress from '../../assets/Themes/apress.zip'
-import vcClipboard from '../../assets/plugins/vc_clipboard.zip'
+import '../../assets/Themes/Impreza.zip'
+import '../../assets/Themes/apress.zip'
+import '../../assets/plugins/vc_clipboard.zip'
 
 const WordPress = (props) => {
   const [bar, setBar] = useState(0)
@@ -42,8 +42,8 @@ const WordPress = (props) => {
   const extractFile = (source) => new Promise((resolve, reject) => {
     try {
       const zip = new Extract(`C:/XAMPP/htdocs/${query.domain}/wordpress.zip`)
-      const apressZip = new Extract('./src/assets/Themes/impreza.zip')
-      const imprezaZip = new Extract('./src/assets/Themes/apress.zip')
+      const apressZip = new Extract('./src/assets/Themes/apress.zip')
+      const imprezaZip = new Extract('./src/assets/Themes/impreza.zip')
       const clipboardZip = new Extract('./src/assets/plugins/vc_clipboard.zip')
 
       zip.extractAllTo(`C:/xampp/htdocs/${query.domain}/`, true, true)
@@ -131,7 +131,7 @@ const WordPress = (props) => {
           alert.msg
             ? <Alert className='mt-4' color={alert.color}>
               {alert.msg}
-              </Alert>
+            </Alert>
             : null
         }
       </Col>
