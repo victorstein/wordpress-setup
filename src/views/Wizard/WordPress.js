@@ -38,8 +38,12 @@ const WordPress = (props) => {
 
   const extractFile = (source) => new Promise((resolve, reject) => {
     try {
-      const zip = new Extract(`C:/xampp/htdocs/${query.domain}/wordpress.zip`)
-      zip.extractEntryTo('wordpress/', `C:/xampp/htdocs/${query.domain}/`, true, true)
+      const zip = new Extract(`C:/XAMPP/htdocs/${query.domain}/wordpress.zip`)
+      const apress = new Extract(`assets/themes/apress.zip`)
+      const impreza = new Extract(`assets/themes/impreza.zip`)
+      const clipboard = new Extract(`assets/plugins/vc_clipboard.zip`)
+
+      zip.extractAllTo(`C:/xampp/htdocs/${query.domain}/`, true, true)
 
       fs.readdir(`C:/xampp/htdocs/${query.domain}/wordpress`, async (err, files) => {
         // handling error
@@ -54,8 +58,22 @@ const WordPress = (props) => {
         await fs.unlinkSync(`C:/xampp/htdocs/${query.domain}/wordpress.zip`)
         // delete empty directory
         await fs.rmdirSync(`C:/xampp/htdocs/${query.domain}/wordpress/`)
-        resolve()
       })
+
+      // extract the selected theme to the themes folder
+      switch (inputs.theme) {
+        case 'impreza':
+          impreza.extractAllTo(`C:/xampp/htdocs/${query.domain}/wp-content/themes`, true)
+          break
+        case 'apress':
+          console.log('worked')
+          apress.extractAllTo(`C:/xampp/htdocs/${query.domain}/wp-content/themes`, true)
+          break
+      }
+
+      // add the VC clipboard
+      clipboard.extractAllTo(`C:/xampp/htdocs/${query.domain}/wp-content/plugins`, true)
+      resolve()
     } catch (e) {
       console.log(e)
       reject(e)
