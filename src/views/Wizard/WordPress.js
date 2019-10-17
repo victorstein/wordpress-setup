@@ -43,8 +43,8 @@ const WordPress = (props) => {
   const extractFile = (source) => new Promise((resolve, reject) => {
     try {
       const zip = new Extract(`C:/XAMPP/htdocs/${query.domain}/wordpress.zip`)
-      const apressZip = new Extract('./src/assets/Themes/impreza.zip')
-      const imprezaZip = new Extract('./src/assets/Themes/apress.zip')
+      const apressZip = new Extract('./src/assets/Themes/apress.zip')
+      const imprezaZip = new Extract('./src/assets/Themes/impreza.zip')
       const clipboardZip = new Extract('./src/assets/plugins/vc_clipboard.zip')
 
       zip.extractAllTo(`C:/xampp/htdocs/${query.domain}/`, true, true)

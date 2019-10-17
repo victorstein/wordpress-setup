@@ -3,6 +3,8 @@ import StepWizard from 'react-step-wizard'
 import Welcome from './Wizard/Welcome'
 import DomainSetUp from './Wizard/DomainSetUp'
 import WordPress from './Wizard/WordPress'
+import Finish from './Wizard/Finish'
+import Database from './Wizard/Database'
 import { Container } from 'reactstrap'
 
 export const wizardStore = createContext()
@@ -24,8 +26,10 @@ const Setup = (props) => {
       }}>
         <StepWizard>
           <Welcome />
+          <Database />
           <DomainSetUp />
           <WordPress />
+          <Finish />
         </StepWizard>
       </wizardStore.Provider>
     </Container>
