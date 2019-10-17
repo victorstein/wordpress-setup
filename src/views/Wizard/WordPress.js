@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react'
-import { Row, Col, Button, Input, Alert, Progress, FormGroup, Label } from 'reactstrap'
+import { Row, Col, Button, Input, Alert, Progress, FormGroup, Label, Spinner } from 'reactstrap'
 import * as fs from 'fs'
 import request from 'request'
 import progress from 'request-progress'
@@ -47,7 +47,7 @@ const WordPress = (props) => {
           return reject(err)
         }
         // listing all files using forEach
-        for (let file of files) {
+        for (const file of files) {
           await extra.move(`C:/xampp/htdocs/${query.domain}/wordpress/${file}`, `C:/xampp/htdocs/${query.domain}/${file}`)
         }
         // delete the zip file
@@ -103,14 +103,14 @@ const WordPress = (props) => {
         <Button color='success' disabled={loading} onClick={download} block>
           {
             loading
-              ? 'DOWNLOADING WORDPRESS'
+              ? <Spinner color='light' />
               : 'DOWNLOAD AND INSTALL'
           }
         </Button>
         {
           alert.msg
             ? <Alert className='mt-4' color={alert.color}>
-              { alert.msg }
+              {alert.msg}
             </Alert>
             : null
         }

@@ -1,5 +1,5 @@
-import React, { useState, useContext } from 'react'
-import { Row, Col, Button, Input, Alert } from 'reactstrap'
+import React, { useState, useContext, useEffect } from 'react'
+import { Row, Col, Button, Input, Alert, Spinner } from 'reactstrap'
 import { useInput, addEntries } from '../../utils'
 import { wizardStore } from '../setup'
 
@@ -10,18 +10,24 @@ const Domain = (props) => {
   })
   const [inputs, setInputs] = useInput()
   const { mutation } = useContext(wizardStore)
+  const [loading, setLoading] = useState(false)
 
-  const addDomain = async () => {
-    try {
-      await addEntries(inputs)
-      mutation.setDomain(inputs.domain)
-      setAlert({ msg: 'Paths to new domain added successfully', color: 'success' })
-      setTimeout(_ => props.nextStep(), 1000)
-    } catch (e) {
-      console.log(e)
-      setAlert({ msg: e.message, color: 'danger' })
+  useEffect(() => {
+    if (loading) {
+      addEntries(inputs)
+        .then(() => {
+          mutation.setDomain(inputs.domain)
+          setAlert({ msg: 'Paths to new domain added successfully', color: 'success' })
+          setLoading(false)
+          setTimeout(_ => props.nextStep(), 1000)
+        })
+        .catch((e) => {
+          console.log(e)
+          setLoading(false)
+          setAlert({ msg: e.message, color: 'danger' })
+        })
     }
-  }
+  }, [loading])
 
   return (
     <Row className='align-items-center'>
@@ -29,12 +35,18 @@ const Domain = (props) => {
         <Input name='domain' onChange={setInputs} type='text' className='w-100 mb-1' placeholder='Add domain' />
         <Input name='suffix' onChange={setInputs} type='text' className='w-100 mb-3' placeholder='Add domain suffix' />
         <div className='d-flex flex-row'>
-          <Button color='success' onClick={addDomain} block>ADD SITE</Button>
+          <Button color='success' disabled={loading} onClick={() => setLoading(true)} block>
+            {
+              loading
+                ? <Spinner color='light' />
+                : 'ADD SITE'
+            }
+          </Button>
         </div>
         {
           alert.msg
             ? <Alert className='mt-4' color={alert.color}>
-              { alert.msg }
+              {alert.msg}
             </Alert>
             : null
         }
