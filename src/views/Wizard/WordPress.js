@@ -9,8 +9,7 @@ import Extract from 'adm-zip'
 import extra from 'fs-extra'
 import impreza from '../../assets/Themes/Impreza.zip'
 import apress from '../../assets/Themes/apress.zip'
-
-console.log(impreza, apress)
+import vcClipboard from '../../assets/plugins/vc_clipboard.zip'
 
 const WordPress = (props) => {
   const [bar, setBar] = useState(0)
@@ -43,9 +42,9 @@ const WordPress = (props) => {
   const extractFile = (source) => new Promise((resolve, reject) => {
     try {
       const zip = new Extract(`C:/XAMPP/htdocs/${query.domain}/wordpress.zip`)
-      const apress = new Extract(`assets/themes/apress.zip`)
-      const impreza = new Extract(`assets/themes/impreza.zip`)
-      const clipboard = new Extract(`assets/plugins/vc_clipboard.zip`)
+      const apressZip = new Extract('./src/assets/Themes/impreza.zip')
+      const imprezaZip = new Extract('./src/assets/Themes/apress.zip')
+      const clipboardZip = new Extract('./src/assets/plugins/vc_clipboard.zip')
 
       zip.extractAllTo(`C:/xampp/htdocs/${query.domain}/`, true, true)
 
@@ -62,22 +61,21 @@ const WordPress = (props) => {
         await fs.unlinkSync(`C:/xampp/htdocs/${query.domain}/wordpress.zip`)
         // delete empty directory
         await fs.rmdirSync(`C:/xampp/htdocs/${query.domain}/wordpress/`)
+
+        // extract the selected theme to the themes folder
+        switch (inputs.theme) {
+          case 'impreza':
+            imprezaZip.extractAllTo(`C:/xampp/htdocs/${query.domain}/wp-content/themes`, true)
+            break
+          case 'apress':
+            apressZip.extractAllTo(`C:/xampp/htdocs/${query.domain}/wp-content/themes`, true)
+            break
+        }
+
+        // add the VC clipboard
+        clipboardZip.extractAllTo(`C:/xampp/htdocs/${query.domain}/wp-content/plugins`, true)
+        resolve()
       })
-
-      // extract the selected theme to the themes folder
-      switch (inputs.theme) {
-        case 'impreza':
-          impreza.extractAllTo(`C:/xampp/htdocs/${query.domain}/wp-content/themes`, true)
-          break
-        case 'apress':
-          console.log('worked')
-          apress.extractAllTo(`C:/xampp/htdocs/${query.domain}/wp-content/themes`, true)
-          break
-      }
-
-      // add the VC clipboard
-      clipboard.extractAllTo(`C:/xampp/htdocs/${query.domain}/wp-content/plugins`, true)
-      resolve()
     } catch (e) {
       console.log(e)
       reject(e)
@@ -133,7 +131,7 @@ const WordPress = (props) => {
           alert.msg
             ? <Alert className='mt-4' color={alert.color}>
               {alert.msg}
-            </Alert>
+              </Alert>
             : null
         }
       </Col>
