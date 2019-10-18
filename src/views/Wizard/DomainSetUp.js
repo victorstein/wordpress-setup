@@ -16,7 +16,10 @@ const Domain = (props) => {
     if (loading) {
       addEntries(inputs)
         .then(() => {
-          mutation.setDomain(inputs.domain)
+          mutation.setData({
+            domain: inputs.domain,
+            suffix: inputs.suffix
+          })
           setAlert({ msg: 'Paths to new domain added successfully', color: 'success' })
           setLoading(false)
           setTimeout(_ => props.nextStep(), 1000)
