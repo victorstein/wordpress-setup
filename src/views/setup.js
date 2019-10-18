@@ -26,8 +26,8 @@ const Setup = (props) => {
       }}>
         <StepWizard>
           <Welcome />
-          <Database />
           <DomainSetUp />
+          <Database />
           <WordPress />
           <Finish />
         </StepWizard>
