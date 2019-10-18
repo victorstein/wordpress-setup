@@ -4,8 +4,11 @@ module.exports = {
    * that runs in the main process.
    */
   entry: './src/main.js',
+  output: {
+    publicPath: ''
+  },
   // Put your normal webpack config below here
   module: {
-    rules: require('./webpack.rules'),
-  },
-};
+    rules: require('./webpack.rules')
+  }
+}
