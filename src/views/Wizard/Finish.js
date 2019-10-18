@@ -10,7 +10,7 @@ function Finish (props) {
           convenience! you can now follow the 5 minutes WordPress Install to start
           designing your site.
         </p>
-        <Button className='text-center' color='success' onClick={props.firstStep}>ADD A NEW DEVELOPMENT SITE</Button>
+        <Button className='text-center mx-auto' color='success' onClick={props.firstStep}>ADD A NEW DEVELOPMENT SITE</Button>
       </Col>
     </Row>
   )
