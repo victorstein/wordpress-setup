@@ -6,12 +6,19 @@ import { wizardStore } from '../setup'
 
 function Database (props) {
   const [inputs, setInputs] = useInput()
-  const { query } = useContext(wizardStore)
+  const { query, mutation } = useContext(wizardStore)
   const [loading, setLoading] = useState(false)
   const [alert, setAlert] = useState({ msg: null, color: null })
 
   const createDatabase = () => {
     setLoading(true)
+    mutation.setData({
+      dbName: inputs.dbName || query.domain,
+      dbUser: inputs.databaseUser || 'root',
+      dbPass: inputs.userPassword || '',
+      dbHost: inputs.host || 'localhost'
+    })
+
     let con = mysql.createConnection({
       host: inputs.host || 'localhost',
       user: inputs.databaseUser || 'root',
@@ -23,12 +30,14 @@ function Database (props) {
         console.log(err)
         setLoading(false)
         setAlert({ msg: err.message, color: 'danger' })
+        return
       }
       con.query(`CREATE DATABASE ${inputs.dbName || query.domain}`, (err, result) => {
         if (err) {
           console.log(err)
           setLoading(false)
           setAlert({ msg: err.message, color: 'danger' })
+          return
         }
         setLoading(false)
         setAlert({ msg: 'Database created', color: 'success' })
