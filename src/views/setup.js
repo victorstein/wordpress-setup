@@ -20,8 +20,7 @@ const Setup = (props) => {
       <wizardStore.Provider value={{
         query: state,
         mutation: {
-          setDomain: (domain) => setState({ ...state, domain }),
-          setSuffix: (suffix) => setState({ ...state, suffix })
+          setData: (data) => setState({ ...state, ...data })
         }
       }}>
         <StepWizard>
