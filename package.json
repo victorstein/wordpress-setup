@@ -96,6 +96,7 @@
     "electron": "6.0.12",
     "file-loader": "^4.2.0",
     "node-loader": "^0.6.0",
-    "style-loader": "^0.23.1"
+    "style-loader": "^0.23.1",
+    "uglifyjs-webpack-plugin": "^2.2.0"
   }
 }
