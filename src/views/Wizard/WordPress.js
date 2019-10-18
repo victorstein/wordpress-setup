@@ -23,6 +23,7 @@ const WordPress = (props) => {
 
   const downloadWorpress = () => new Promise((resolve, reject) => {
     setLoading(true)
+
     progress(request('http://wordpress.org/latest.zip'), { throttle: 100 })
       .on('progress', function ({ percent }) {
         setBar((percent * 100).toFixed(0))
