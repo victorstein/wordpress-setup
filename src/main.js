@@ -1,4 +1,5 @@
-const { app, BrowserWindow } = require('electron')
+const { app, BrowserWindow, protocol } = require('electron')
+const path = require('path')
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
@@ -19,6 +20,8 @@ const createWindow = () => {
       nodeIntegration: true
     }
   })
+
+  mainWindow.toggleDevTools()
 
   // and load the index.html of the app.
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY)

@@ -10,6 +10,7 @@ import extra from 'fs-extra'
 import '../../assets/Themes/Impreza.zip'
 import '../../assets/Themes/apress.zip'
 import '../../assets/plugins/vc_clipboard.zip'
+import { remote } from 'electron'
 
 const WordPress = (props) => {
   const [bar, setBar] = useState(0)
@@ -42,10 +43,18 @@ const WordPress = (props) => {
 
   const extractFile = (source) => new Promise((resolve, reject) => {
     try {
+      // ran in both old app and new app (unpackaged in dev environment):
+      console.log('remote.app.getAppPath(): ', remote.app.getAppPath())
+      console.log("remote.app.getPath('appData'): ", remote.app.getPath('appData'))
       const zip = new Extract(`C:/XAMPP/htdocs/${query.domain}/wordpress.zip`)
-      const apressZip = new Extract('./src/assets/Themes/apress.zip')
-      const imprezaZip = new Extract('./src/assets/Themes/impreza.zip')
-      const clipboardZip = new Extract('./src/assets/plugins/vc_clipboard.zip')
+      const apressZip = new Extract(`${remote.app.getAppPath()}/.webpack/renderer/assets/Themes/apress.zip`)
+      const imprezaZip = new Extract(`${remote.app.getAppPath()}/.webpack/renderer/assets/Themes/impreza.zip`)
+      const clipboardZip = new Extract(`${remote.app.getAppPath()}/.webpack/renderer/assets/plugins/vc_clipboard.zip`)
+      /*
+      const apressZip = new Extract('../../src/assets/Themes/apress.zip')
+      const imprezaZip = new Extract('../../src/assets/Themes/impreza.zip')
+      const clipboardZip = new Extract('../../src/assets/plugins/vc_clipboard.zip')
+      */
 
       zip.extractAllTo(`C:/xampp/htdocs/${query.domain}/`, true, true)
 
@@ -90,7 +99,7 @@ const WordPress = (props) => {
       // unzip wordpress
       await extractFile()
       setLoading(false)
-      setAlert({ msg: 'WordPress installed successfully witht the specified theme', color: 'success' })
+      setAlert({ msg: 'WordPress installed successfully with the specified theme', color: 'success' })
       setTimeout(_ => props.nextStep(), 1000)
     } catch (e) {
       console.log(e)

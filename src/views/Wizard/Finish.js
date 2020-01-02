@@ -14,14 +14,16 @@ function Finish (props) {
           designing your site.
         </p>
         <h3 className='text-center'>Here is the most relevant information</h3>
-        {
-          Object.entries(query).map(u => (
-            <div key={u[0]} className='mx-auto text-center'>
-              <strong>{ u[0] }: </strong>
-              <p>{u[1]}</p>
-            </div>
-          ))
-        }
+        <Row>
+          {
+            Object.entries(query).map(u => (
+              <Col md='4' sm='4' lg='4' xl='4' key={u[0]} className='mx-auto text-center'>
+                <strong>{ u[0] }: </strong>
+                <p>{u[1]}</p>
+              </Col>
+            ))
+          }
+        </Row>
         <div className='d-flex align-items-center justify-content-center'>
           <Button className='text-center' color='success' onClick={props.firstStep}>ADD A NEW DEVELOPMENT SITE</Button>
         </div>
