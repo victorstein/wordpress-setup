@@ -10,6 +10,11 @@ import extra from 'fs-extra'
 import '../../assets/Themes/Impreza.zip'
 import '../../assets/Themes/apress.zip'
 import '../../assets/plugins/vc_clipboard.zip'
+import '../../assets/plugins/apcore.zip'
+import '../../assets/plugins/apress-importer.zip'
+import '../../assets/plugins/js_composer.zip'
+import '../../assets/plugins/revslider.zip'
+import '../../assets/plugins/Ultimate_VC_Addons.zip'
 import { remote } from 'electron'
 
 const WordPress = (props) => {
@@ -50,11 +55,11 @@ const WordPress = (props) => {
       const apressZip = new Extract(`${remote.app.getAppPath()}/.webpack/renderer/assets/Themes/apress.zip`)
       const imprezaZip = new Extract(`${remote.app.getAppPath()}/.webpack/renderer/assets/Themes/impreza.zip`)
       const clipboardZip = new Extract(`${remote.app.getAppPath()}/.webpack/renderer/assets/plugins/vc_clipboard.zip`)
-      /*
-      const apressZip = new Extract('../../src/assets/Themes/apress.zip')
-      const imprezaZip = new Extract('../../src/assets/Themes/impreza.zip')
-      const clipboardZip = new Extract('../../src/assets/plugins/vc_clipboard.zip')
-      */
+      const apressCore = new Extract(`${remote.app.getAppPath()}/.webpack/renderer/assets/plugins/apcore.zip`)
+      const apressImporter = new Extract(`${remote.app.getAppPath()}/.webpack/renderer/assets/plugins/apress-importer.zip`)
+      const jsComposer = new Extract(`${remote.app.getAppPath()}/.webpack/renderer/assets/plugins/js_composer.zip`)
+      const revSlider = new Extract(`${remote.app.getAppPath()}/.webpack/renderer/assets/plugins/revslider.zip`)
+      const ultVCAddons = new Extract(`${remote.app.getAppPath()}/.webpack/renderer/assets/plugins/Ultimate_VC_Addons.zip`)
 
       zip.extractAllTo(`C:/xampp/htdocs/${query.domain}/`, true, true)
 
@@ -82,8 +87,13 @@ const WordPress = (props) => {
             break
         }
 
-        // add the VC clipboard
+        // add the plugins
         clipboardZip.extractAllTo(`C:/xampp/htdocs/${query.domain}/wp-content/plugins`, true)
+        apressCore.extractAllTo(`C:/xampp/htdocs/${query.domain}/wp-content/plugins`, true)
+        apressImporter.extractAllTo(`C:/xampp/htdocs/${query.domain}/wp-content/plugins`, true)
+        jsComposer.extractAllTo(`C:/xampp/htdocs/${query.domain}/wp-content/plugins`, true)
+        revSlider.extractAllTo(`C:/xampp/htdocs/${query.domain}/wp-content/plugins`, true)
+        ultVCAddons.extractAllTo(`C:/xampp/htdocs/${query.domain}/wp-content/plugins`, true)
         resolve()
       })
     } catch (e) {
@@ -113,12 +123,6 @@ const WordPress = (props) => {
         <FormGroup tag='fieldset'>
           <legend>Available themes</legend>
           <div className='d-flex flex-row'>
-            <FormGroup className='mr-3' check>
-              <Label check>
-                <Input checked={inputs.theme === 'impreza'} type='radio' onChange={setInputs} name='theme' value='impreza' />
-                Impreza
-              </Label>
-            </FormGroup>
             <FormGroup className='mr-3' check>
               <Label check>
                 <Input checked={inputs.theme === 'apress'} type='radio' onChange={setInputs} name='theme' value='apress' />
