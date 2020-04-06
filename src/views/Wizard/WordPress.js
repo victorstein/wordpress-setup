@@ -7,7 +7,6 @@ import { useInput } from '../../utils'
 import { wizardStore } from '../setup'
 import Extract from 'adm-zip'
 import extra from 'fs-extra'
-import '../../assets/Themes/Impreza.zip'
 import '../../assets/Themes/apress.zip'
 import '../../assets/plugins/vc_clipboard.zip'
 import '../../assets/plugins/apcore.zip'
@@ -24,7 +23,7 @@ const WordPress = (props) => {
     color: null
   })
   const [loading, setLoading] = useState(false)
-  const [inputs, setInputs] = useInput({ theme: 'impreza' })
+  const [inputs, setInputs] = useInput({ theme: 'apress' })
   const { query } = useContext(wizardStore)
 
   const downloadWorpress = () => new Promise((resolve, reject) => {
@@ -53,7 +52,6 @@ const WordPress = (props) => {
       console.log("remote.app.getPath('appData'): ", remote.app.getPath('appData'))
       const zip = new Extract(`C:/XAMPP/htdocs/${query.domain}/wordpress.zip`)
       const apressZip = new Extract(`${remote.app.getAppPath()}/.webpack/renderer/assets/Themes/apress.zip`)
-      const imprezaZip = new Extract(`${remote.app.getAppPath()}/.webpack/renderer/assets/Themes/impreza.zip`)
       const clipboardZip = new Extract(`${remote.app.getAppPath()}/.webpack/renderer/assets/plugins/vc_clipboard.zip`)
       const apressCore = new Extract(`${remote.app.getAppPath()}/.webpack/renderer/assets/plugins/apcore.zip`)
       const apressImporter = new Extract(`${remote.app.getAppPath()}/.webpack/renderer/assets/plugins/apress-importer.zip`)
@@ -79,9 +77,6 @@ const WordPress = (props) => {
 
         // extract the selected theme to the themes folder
         switch (inputs.theme) {
-          case 'impreza':
-            imprezaZip.extractAllTo(`C:/xampp/htdocs/${query.domain}/wp-content/themes`, true)
-            break
           case 'apress':
             apressZip.extractAllTo(`C:/xampp/htdocs/${query.domain}/wp-content/themes`, true)
             break
@@ -145,7 +140,7 @@ const WordPress = (props) => {
           alert.msg
             ? <Alert className='mt-4' color={alert.color}>
               {alert.msg}
-            </Alert>
+              </Alert>
             : null
         }
       </Col>
