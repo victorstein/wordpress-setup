@@ -18,7 +18,10 @@ const Domain = (props) => {
         .then(() => {
           mutation.setData({
             domain: inputs.domain,
-            suffix: inputs.suffix
+            suffix: inputs.suffix,
+            WPUser: inputs.WPUser,
+            WPPass: inputs.WPPass,
+            WPEmail: inputs.WPEmail
           })
           setAlert({ msg: 'Paths to new domain added successfully', color: 'success' })
           setLoading(false)
@@ -37,6 +40,9 @@ const Domain = (props) => {
       <Col>
         <Input name='domain' onChange={setInputs} type='text' className='w-100 mb-1' placeholder='Add domain' />
         <Input name='suffix' onChange={setInputs} type='text' className='w-100 mb-3' placeholder='Add domain suffix' />
+        <Input name='WPUser' onChange={setInputs} type='text' className='w-100 mb-1' placeholder='Add WordPress User' />
+        <Input name='WPPass' onChange={setInputs} type='text' className='w-100 mb-3' placeholder='Add WordPress Password' />
+        <Input name='WPEmail' onChange={setInputs} type='text' className='w-100 mb-3' placeholder='Add WordPress adminEmail' />
         <div className='d-flex flex-row'>
           <Button color='success' disabled={loading} onClick={() => setLoading(true)} block>
             {

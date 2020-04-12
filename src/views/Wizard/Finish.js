@@ -18,7 +18,7 @@ function Finish (props) {
           {
             Object.entries(query).map(u => (
               <Col md='4' sm='4' lg='4' xl='4' key={u[0]} className='mx-auto text-center'>
-                <strong>{ u[0] }: </strong>
+                <strong>{u[0]}: </strong>
                 <p>{u[1]}</p>
               </Col>
             ))

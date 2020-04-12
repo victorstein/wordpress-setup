@@ -1,10 +1,45 @@
-const { app, BrowserWindow, protocol } = require('electron')
-const path = require('path')
+const { app, BrowserWindow } = require('electron')
+var spawn = require('child_process').spawn
+var path = require('path')
 
-// Handle creating/removing shortcuts on Windows when installing/uninstalling.
-if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
-  app.quit()
+if (require('electron-squirrel-startup')) app.exit()
+
+var run = function (args, done) {
+  var updateExe = path.resolve(path.dirname(process.execPath), '..', 'Update.exe')
+  // debug('Spawning `%s` with args `%s`', updateExe, args);
+  spawn(updateExe, args, {
+    detached: true
+  }).on('close', done)
 }
+
+var check = function () {
+  if (process.platform === 'win32') {
+    var cmd = process.argv[1]
+    // debug('processing squirrel command `%s`', cmd);
+    var target = path.basename(process.execPath)
+
+    if (cmd === '--squirrel-firstrun') {
+      run(['--createShortcut=' + target + ''], app.quit)
+      return true
+    }
+
+    if (cmd === '--squirrel-install' || cmd === '--squirrel-updated') {
+      run(['--createShortcut=' + target + ''], app.quit)
+      return true
+    }
+    if (cmd === '--squirrel-uninstall') {
+      run(['--removeShortcut=' + target + ''], app.quit)
+      return true
+    }
+    if (cmd === '--squirrel-obsolete') {
+      app.quit()
+      return true
+    }
+  }
+  return false
+}
+
+check()
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
