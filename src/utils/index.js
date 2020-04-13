@@ -19,6 +19,7 @@ const ps1 = new Shell({
 export const verifyVhost = ({ path = null }) => new Promise((resolve, reject) => {
   try {
     // modify default vhost
+    childProcess.execSync(!path ? 'C:\\xampp\\xampp_start.exe' : `${path}\\xampp_start.exe`)
     vHostPath = path ? `${path}/apache/conf/extra/httpd-vhosts.conf` : vHostPath
     // check if vhost exists
     if (fs.existsSync(vHostPath) && fs.existsSync(hostPath)) {
@@ -83,6 +84,7 @@ export const addENV = () => {
       ps1.invoke()
         .then(output => {
           console.log(output, 'added variables to user')
+          childProcess.execSync('C:\\xampp\\xampp_stop.exe')
           window.alert('Environment variables Added! Please open WordPress setup again.')
           remote.app.exit(0)
           return true
@@ -110,8 +112,7 @@ export const addEntries = ({ domain = null, suffix = null }) => new Promise((res
       return reject(new Error('Domain already exists in your host files!'))
     }
 
-    const data = `
-  # virtual host entry for www.${domain}.${suffix}
+    const data = `# virtual host entry for www.${domain}.${suffix}
   <VirtualHost *:80>
     DocumentRoot C:/xampp/htdocs/${domain}/
     ServerName www.${domain}.${suffix}
@@ -119,13 +120,10 @@ export const addEntries = ({ domain = null, suffix = null }) => new Promise((res
   <VirtualHost *:80>
       DocumentRoot C:/xampp/htdocs/${domain}/
       ServerName www.${domain}.${suffix}
-  </VirtualHost>
-  `
-    const host = `
-  # virtual host entry for www.${domain}.${suffix}
+  </VirtualHost>`
+    const host = `# virtual host entry for www.${domain}.${suffix}
   127.0.0.1       www.${domain}.${suffix}
-  127.0.0.1       ${domain}.${suffix}
-  `
+  127.0.0.1       ${domain}.${suffix}`
 
     fs.appendFileSync(hostPath, host)
     fs.appendFileSync(vHostPath, data)

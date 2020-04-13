@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Row, Col, Button, Input, Alert } from 'reactstrap'
+import { Row, Col, Button, Input, Alert, Spinner } from 'reactstrap'
 import { verifyVhost, useInput } from '../../utils'
 
 const Welcome = (props) => {
@@ -7,13 +7,15 @@ const Welcome = (props) => {
   const [loading, setLoading] = useState(false)
   const [input, setInput] = useInput()
 
-  const checkXamp = async () => {
+  const checkXamp = () => {
     try {
       setLoading(true)
-      await verifyVhost(input)
-      setAlert({ msg: 'Success! If we need to set up your environment we will restart the app.', color: 'success' })
-      setTimeout(_ => props.nextStep(), 1000)
-      setLoading(false)
+      setTimeout(async () => {
+        await verifyVhost(input)
+        setAlert({ msg: 'Success! If we need to set up your environment we will restart the app.', color: 'success' })
+        setTimeout(_ => props.nextStep(), 1000)
+        setLoading(false)
+      }, 500)
     } catch (e) {
       console.log(e)
       setAlert({ msg: e.message, color: 'danger' })
@@ -30,13 +32,13 @@ const Welcome = (props) => {
         <h1 className='font-weight-bold'>WELCOME</h1>
         <p>Welcome to the WordPress enviroment setup wizzard!</p>
         <p className='mb-3'>This wizzard will guide you through all the steps necessary to get up and running with your WordPress
-          development environment. Make sure you have XAMPP installed before you proceed, We will also check if you have the wp-cli and
-          PHP enviroment setup properly, if not.... Dont Worry! we'll do it for you automagically! To get started please add the
-          path to your XAMPP installation:
+          development environment. Make sure you have XAMPP installed before you proceed. <span className='text-danger font-weight-bold'>there is NO need to open or starting XAMPP! </span>
+           We will do it for you. We will also check if you have the wp-cli and PHP enviroment setup properly, if not.... Dont Worry! we'll do it for you automagically!
+            To get started please add the path to your XAMPP installation:
         </p>
         <div className='d-flex flex-row'>
           <Input onChange={setInput} type='text' className='w-50 mr-4' name='path' placeholder='C:/xampp' />
-          <Button disabled={loading} color='success' onClick={checkXamp}>CHECK NOW</Button>
+          <Button disabled={loading} color='success' onClick={checkXamp}>{loading ? <><Spinner size='sm' color='light' /> STARTING XAMPP</> : 'CHECK NOW'}</Button>
         </div>
         {
           alert.msg
