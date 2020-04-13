@@ -19,7 +19,6 @@ const ps1 = new Shell({
 export const verifyVhost = ({ path = null }) => new Promise((resolve, reject) => {
   try {
     // modify default vhost
-    childProcess.execSync(!path ? 'C:\\xampp\\xampp_start.exe' : `${path}\\xampp_start.exe`)
     vHostPath = path ? `${path}/apache/conf/extra/httpd-vhosts.conf` : vHostPath
     // check if vhost exists
     if (fs.existsSync(vHostPath) && fs.existsSync(hostPath)) {
@@ -29,6 +28,7 @@ export const verifyVhost = ({ path = null }) => new Promise((resolve, reject) =>
         addENV()
         resolve()
       } else {
+        childProcess.execSync(!path ? 'C:\\xampp\\xampp_start.exe' : `${path}\\xampp_start.exe`)
         resolve()
       }
     }
