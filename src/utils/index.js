@@ -112,18 +112,25 @@ export const addEntries = ({ domain = null, suffix = null }) => new Promise((res
       return reject(new Error('Domain already exists in your host files!'))
     }
 
-    const data = `# virtual host entry for www.${domain}.${suffix}
+    const data = `
+# virtual host entry for www.${domain}.${suffix}
+NameVirtualHost *:80
   <VirtualHost *:80>
     DocumentRoot C:/xampp/htdocs/${domain}/
-    ServerName www.${domain}.${suffix}
+    ServerName localhost
   </VirtualHost>
   <VirtualHost *:80>
+      ServerAdmin admin@${domain}.${suffix}
       DocumentRoot C:/xampp/htdocs/${domain}/
-      ServerName www.${domain}.${suffix}
-  </VirtualHost>`
-    const host = `# virtual host entry for www.${domain}.${suffix}
+      ServerName ${domain}.${suffix}
+      serverAlias www.${domain}.${suffix}
+  </VirtualHost>
+`
+    const host = `
+# virtual host entry for www.${domain}.${suffix}
   127.0.0.1       www.${domain}.${suffix}
-  127.0.0.1       ${domain}.${suffix}`
+  127.0.0.1       ${domain}.${suffix}
+`
 
     fs.appendFileSync(hostPath, host)
     fs.appendFileSync(vHostPath, data)
