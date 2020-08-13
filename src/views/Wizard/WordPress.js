@@ -31,6 +31,8 @@ const WordPress = (props) => {
         return installTotal()
       case 'xtra':
         return installXtra()
+      case 'phlox':
+        return installPhlox()
       default:
         return installApress()
     }
@@ -45,6 +47,8 @@ const WordPress = (props) => {
     childProcess.execSync(`wp plugin install "${remote.app.getAppPath()}/.webpack/renderer/assets/plugins/apress/revslider.zip" --path=C:/xampp/htdocs/${query.domain} --activate`)
     childProcess.execSync(`wp plugin install "${remote.app.getAppPath()}/.webpack/renderer/assets/plugins/apress/Ultimate_VC_Addons.zip" --path=C:/xampp/htdocs/${query.domain} --activate`)
     childProcess.execSync(`wp plugin install "contact-form-7" --path=C:/xampp/htdocs/${query.domain} --activate`)
+    childProcess.execSync(`wp plugin install "wp-smushit" --path=C:/xampp/htdocs/${query.domain} --activate`)
+    childProcess.execSync(`wp plugin install "wordfence" --path=C:/xampp/htdocs/${query.domain} --activate`)
     resolve()
   })
 
@@ -57,6 +61,8 @@ const WordPress = (props) => {
     childProcess.execSync(`wp plugin install "${remote.app.getAppPath()}/.webpack/renderer/assets/plugins/total/revslider.zip" --path=C:/xampp/htdocs/${query.domain} --activate`)
     childProcess.execSync(`wp plugin install "${remote.app.getAppPath()}/.webpack/renderer/assets/plugins/total/total-theme-core.zip" --path=C:/xampp/htdocs/${query.domain} --activate`)
     childProcess.execSync(`wp plugin install "contact-form-7" --path=C:/xampp/htdocs/${query.domain} --activate`)
+    childProcess.execSync(`wp plugin install "wp-smushit" --path=C:/xampp/htdocs/${query.domain} --activate`)
+    childProcess.execSync(`wp plugin install "wordfence" --path=C:/xampp/htdocs/${query.domain} --activate`)
     resolve()
   })
 
@@ -65,6 +71,19 @@ const WordPress = (props) => {
     childProcess.execSync(`wp plugin install "${remote.app.getAppPath()}/.webpack/renderer/assets/plugins/vc_clipboard.zip" --path=C:/xampp/htdocs/${query.domain} --activate`)
     childProcess.execSync(`wp plugin install "${remote.app.getAppPath()}/.webpack/renderer/assets/plugins/xtra/codevz-plus.zip" --path=C:/xampp/htdocs/${query.domain} --activate`)
     childProcess.execSync(`wp plugin install "contact-form-7" --path=C:/xampp/htdocs/${query.domain} --activate`)
+    childProcess.execSync(`wp plugin install "wp-smushit" --path=C:/xampp/htdocs/${query.domain} --activate`)
+    childProcess.execSync(`wp plugin install "wordfence" --path=C:/xampp/htdocs/${query.domain} --activate`)
+    resolve()
+  })
+
+  const installPhlox = () => new Promise((resolve, reject) => {
+    childProcess.execSync(`wp theme install "${remote.app.getAppPath()}/.webpack/renderer/assets/Themes/phlox-pro.zip" --path=C:/xampp/htdocs/${query.domain} --activate`)
+    childProcess.execSync(`wp plugin install "${remote.app.getAppPath()}/.webpack/renderer/assets/plugins/phlox/auxin-pro-tools.zip" --path=C:/xampp/htdocs/${query.domain} --activate`)
+    childProcess.execSync(`wp plugin install "${remote.app.getAppPath()}/.webpack/renderer/assets/plugins/phlox/go_pricing.zip" --path=C:/xampp/htdocs/${query.domain} --activate`)
+    childProcess.execSync(`wp plugin install "${remote.app.getAppPath()}/.webpack/renderer/assets/plugins/phlox/revslider.zip" --path=C:/xampp/htdocs/${query.domain} --activate`)
+    childProcess.execSync(`wp plugin install "contact-form-7" --path=C:/xampp/htdocs/${query.domain} --activate`)
+    childProcess.execSync(`wp plugin install "wp-smushit" --path=C:/xampp/htdocs/${query.domain} --activate`)
+    childProcess.execSync(`wp plugin install "wordfence" --path=C:/xampp/htdocs/${query.domain} --activate`)
     resolve()
   })
 
@@ -114,6 +133,12 @@ const WordPress = (props) => {
                 Xtra
               </Label>
             </FormGroup>
+            <FormGroup className='mr-3' check>
+              <Label check>
+                <Input checked={inputs.theme === 'phlox'} type='radio' onChange={setInputs} name='theme' value='phlox' />
+                Phlox
+              </Label>
+            </FormGroup>
           </div>
         </FormGroup>
         <Button color='success' disabled={loading} onClick={() => download(inputs.theme)} block>
@@ -127,7 +152,7 @@ const WordPress = (props) => {
           alert.msg
             ? <Alert className='mt-4' color={alert.color}>
               {alert.msg}
-              </Alert>
+            </Alert>
             : null
         }
       </Col>
